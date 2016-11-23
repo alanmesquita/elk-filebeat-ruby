@@ -1,0 +1,9 @@
+<%= erb :'partials/message_box' %>
+
+<form action="/vote" method="post">
+  teste:
+  <input type="radio" name="vote" value='1' />
+  <input type="radio" name="vote" value='2' />
+  <%= erb :'partials/captcha' %>
+  <input type="submit" value="votar" />
+</form>

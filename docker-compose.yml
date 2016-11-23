@@ -1,0 +1,51 @@
+web:
+  tty: true
+  stdin_open: true
+  container_name: wall
+  build: ./wall
+  command: bundle exec rackup -o 0.0.0.0 -p 9292
+  volumes:
+    - ./wall:/wall
+    - /tmp:/tmp/
+  ports:
+    - "9292:9292"
+  links:
+    - elasticsearch
+
+elasticsearch:
+  image: elasticsearch:latest
+  command: elasticsearch -Des.network.host=0.0.0.0
+  ports:
+    - "9200:9200"
+    - "9300:9300"
+
+logstash:
+  build: ./logstash
+  command: logstash -f /etc/logstash/conf.d/logstash.conf
+  volumes:
+    - ./logstash/config:/etc/logstash/conf.d
+  ports:
+    - "5001:5000"
+  links:
+    - elasticsearch
+
+kibana:
+  build: ./kibana
+  volumes:
+    - ./kibana/config/:/opt/kibana/config/
+  ports:
+    - "5601:5601"
+  links:
+    - elasticsearch
+
+filebeat:
+  build: ./filebeat
+  restart: unless-stopped
+  volumes:
+    - /tmp:/tmp/
+  environment:
+    - LOGSTASH_HOST=logstash.localdomain
+    - LOGSTASH_PORT=5001
+    - SHIPPER_NAME=aWonderfulName
+  links:
+    - logstash

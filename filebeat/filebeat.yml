@@ -1,0 +1,12 @@
+filebeat:
+  prospectors:
+    -
+      paths:
+        - /tmp/structured_log
+      fields_under_root: true
+      fields:
+        tags: ['json']
+
+output:
+  logstash:
+    hosts: ["logstash:5000"]

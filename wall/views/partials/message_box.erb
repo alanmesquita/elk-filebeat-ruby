@@ -1,0 +1,9 @@
+<% if not @messages.nil?  %>
+<div class="message-box">
+  <ul>
+  <% @messages.each do |message| %>
+    <li><%= message %></li>
+  <% end %>
+  </ul>
+</div>
+<% end %>
