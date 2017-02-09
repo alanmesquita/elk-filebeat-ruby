@@ -9,7 +9,6 @@ class App < Sinatra::Base
   include LogForObject
 
   get '/' do
-      require 'pry'; binding.pry
     erb :home
   end
 
@@ -29,12 +28,5 @@ class App < Sinatra::Base
 
     # I'm assuming that there is an admin to set the wall id
     log_wall(ip: params[:ip], vote: params[:vote], wall_id: 1)
-
-    # redirect to success
-  end
-
-  get '/success' do
-    # get votes
-    # render success
   end
 end
